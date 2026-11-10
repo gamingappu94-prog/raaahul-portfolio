@@ -92,7 +92,7 @@ export function ApertureIntro({
         <defs>
           <mask id="iris-mask">
             <rect x="-1000" y="-1000" width="2000" height="2000" fill="white" />
-            <g className="animate-iris-open [transform-box:fill-box] [transform-origin:50%_50%]">
+            <g className="animate-iris-open">
               <polygon points={hole} fill="black" />
             </g>
           </mask>
@@ -101,8 +101,10 @@ export function ApertureIntro({
             <stop offset="55%" stopColor="var(--foreground)" stopOpacity="0.06" />
             <stop offset="100%" stopColor="var(--scrim)" stopOpacity="0" />
           </radialGradient>
-          <clipPath id="lens-peep">
-            <circle r="34" />
+          <clipPath id="iris-peep">
+            <g className="animate-iris-open">
+              <polygon points={hole} />
+            </g>
           </clipPath>
         </defs>
 
@@ -115,16 +117,16 @@ export function ApertureIntro({
           mask="url(#iris-mask)"
         />
 
-        {/* Faint rangefinder preview inside the lens glass while hunting */}
-        <g clipPath="url(#lens-peep)" className="animate-intro-fade">
+        {/* Live Chennai photograph glimpsed inside the opening iris blades */}
+        <g clipPath="url(#iris-peep)" className="animate-intro-fade">
           <image
             href={preview.src}
-            x="-36"
-            y="-36"
-            width="72"
-            height="72"
+            x="-55"
+            y="-55"
+            width="110"
+            height="110"
             preserveAspectRatio="xMidYMid slice"
-            opacity="0.32"
+            opacity="0.72"
           />
         </g>
 
@@ -132,7 +134,7 @@ export function ApertureIntro({
         <circle r="46" fill="url(#lens-coat)" className="animate-intro-fade" />
 
         {/* Mechanical 9-blade iris */}
-        <g className="animate-iris-open [transform-box:fill-box] [transform-origin:50%_50%]">
+        <g className="animate-iris-open">
           {edges.map((e, i) => (
             <line
               key={i}

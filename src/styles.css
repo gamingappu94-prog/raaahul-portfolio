@@ -249,10 +249,10 @@
 
 @keyframes intro-fade {
   0%,
-  68% {
+  76% {
     opacity: 1;
   }
-  84%,
+  90%,
   100% {
     opacity: 0;
   }
