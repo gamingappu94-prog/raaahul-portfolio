@@ -6,15 +6,15 @@
       "capability": "code",
       "source": "TanStack Start v1 React 19 photography portfolio (/, /work, /reels, /about, /contact) with Darkroom theme, aperture intro, live viewfinder, category filter, lightbox, and video reels",
       "outcome": "recreate",
-      "status": "in_progress",
-      "next_action": "Port routes, components, styling, and configuration into target project"
+      "status": "verified",
+      "next_action": "none"
     },
     {
       "capability": "uploaded_file_bytes",
-      "source": "44 Lovable CDN assets (24 photographs, 10 reel videos, 10 reel poster images) referenced via .asset.json pointers on source project 520a9e13-b642-438c-968e-f61429b39718",
+      "source": "44 Lovable CDN assets (24 photographs, 10 reel videos, 10 reel poster images)",
       "outcome": "migrate",
-      "status": "in_progress",
-      "next_action": "Download all 44 media files and upload into this project's Lovable CDN storage via lovable-assets create, updating src/assets/**/*.asset.json pointers"
+      "status": "verified",
+      "next_action": "none"
     },
     {
       "capability": "schema",
@@ -25,10 +25,10 @@
     },
     {
       "capability": "records",
-      "source": "24 curated photo stories in src/lib/photos.ts and 10 reel stories in src/lib/reels.ts (bundled in code, no external database)",
+      "source": "24 curated photo stories in src/lib/photos.ts and 10 reel stories in src/lib/reels.ts",
       "outcome": "recreate",
-      "status": "in_progress",
-      "next_action": "Copy src/lib/photos.ts and src/lib/reels.ts with migrated asset pointers"
+      "status": "verified",
+      "next_action": "none"
     },
     {
       "capability": "auth_identities",
@@ -48,8 +48,8 @@
       "capability": "external_providers",
       "source": "Google Fonts (Instrument Serif + Work Sans) and mailto: contact link (hello@rahulphotography.in)",
       "outcome": "preserve",
-      "status": "in_progress",
-      "next_action": "Preserve font links in __root.tsx head() and mailto contact handler in /contact"
+      "status": "verified",
+      "next_action": "none"
     },
     {
       "capability": "public_endpoints",
@@ -95,10 +95,10 @@
     },
     {
       "capability": "verification",
-      "source": "Build, tests, route rendering, lightbox, filter tabs, video reels, and CDN media playback/display",
+      "source": "Build, vitest routing suite, all 5 routes, category filters, lightbox, and CDN image/video playback verified with zero console or network errors",
       "outcome": "verify",
-      "status": "pending",
-      "next_action": "Run vitest, check build-errors.log, and verify routes + media in Playwright"
+      "status": "verified",
+      "next_action": "none"
     }
   ]
 }
