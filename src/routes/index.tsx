@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { Aperture, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { categories, photos } from "@/lib/photos";
 import { reels } from "@/lib/reels";
@@ -46,6 +46,7 @@ const STORY_SLUGS = [
 
 function Index() {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [introReplay, setIntroReplay] = useState(0);
 
   useEffect(() => {
     const nodes = document.querySelectorAll<HTMLElement>(".reveal, .develop");
@@ -84,13 +85,23 @@ function Index() {
 
   return (
     <>
-      <ApertureIntro />
+      <ApertureIntro replayNonce={introReplay} />
       {/* Hero */}
       <section className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-20 pt-28 md:px-10 lg:grid-cols-12 lg:items-end lg:pt-32">
         <div className="min-w-0 lg:col-span-7">
-          <p className="eyebrow animate-rise text-primary">
-            Street & documentary · Chennai, India
-          </p>
+          <div className="flex flex-wrap items-center gap-4 animate-rise">
+            <p className="eyebrow text-primary">
+              Street & documentary · Chennai, India
+            </p>
+            <button
+              type="button"
+              onClick={() => setIntroReplay((n) => n + 1)}
+              className="eyebrow inline-flex items-center gap-1.5 border border-border px-2.5 py-1 text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              <Aperture className="size-3 text-primary" />
+              Replay lens intro
+            </button>
+          </div>
           <h1
             className="mt-6 font-display text-6xl leading-[0.95] animate-rise sm:text-7xl lg:text-[8.5rem]"
             style={{ animationDelay: "120ms" }}
@@ -133,7 +144,7 @@ function Index() {
           </div>
         </div>
         <div className="min-w-0 lg:col-span-5 animate-rise" style={{ animationDelay: "200ms" }}>
-          <Viewfinder startDelay={2600} onSelect={openBySlug} />
+          <Viewfinder startDelay={5200} onSelect={openBySlug} />
         </div>
       </section>
 
