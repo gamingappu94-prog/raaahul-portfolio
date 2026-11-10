@@ -13,17 +13,22 @@ const edges = verts.map(([x, y], k) => {
   const dx = x - px;
   const dy = y - py;
   const len = Math.hypot(dx, dy);
-  return { x1: x, y1: y, x2: x + (dx / len) * 400, y2: y + (dy / len) * 400 };
+  return {
+    x1: x.toFixed(3),
+    y1: y.toFixed(3),
+    x2: (x + (dx / len) * 400).toFixed(3),
+    y2: (y + (dy / len) * 400).toFixed(3),
+  };
 });
 const ticks = Array.from({ length: 60 }, (_, i) => {
   const a = (Math.PI * 2 * i) / 60;
   const r1 = 48;
   const r2 = i % 5 === 0 ? 51.2 : 49.4;
   return {
-    x1: Math.cos(a) * r1,
-    y1: Math.sin(a) * r1,
-    x2: Math.cos(a) * r2,
-    y2: Math.sin(a) * r2,
+    x1: (Math.cos(a) * r1).toFixed(3),
+    y1: (Math.sin(a) * r1).toFixed(3),
+    x2: (Math.cos(a) * r2).toFixed(3),
+    y2: (Math.sin(a) * r2).toFixed(3),
     major: i % 5 === 0,
   };
 });
