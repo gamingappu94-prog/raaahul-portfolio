@@ -80,20 +80,11 @@ export function ApertureIntro({
   return (
     <div
       key={replayNonce}
-      aria-hidden
       className="fixed inset-0 z-[70] animate-intro-out"
       onClick={() => setShow(false)}
     >
-      {/* Subtle live lens preview seen through the iris hole as it hunts */}
-      <div className="pointer-events-none absolute inset-0 grid place-items-center bg-scrim animate-intro-fade">
-        <img
-          src={preview.src}
-          alt=""
-          className="h-[54vmin] w-[54vmin] rounded-full object-cover opacity-55 blur-[1px] transition-all duration-700"
-        />
-      </div>
-
       <svg
+        aria-hidden
         className="absolute inset-0 h-full w-full"
         viewBox="-100 -100 200 200"
         preserveAspectRatio="xMidYMid slice"
@@ -106,10 +97,13 @@ export function ApertureIntro({
             </g>
           </mask>
           <radialGradient id="lens-coat" cx="35%" cy="30%" r="70%">
-            <stop offset="0%" stopColor="oklch(0.74 0.15 58 / 0.18)" />
-            <stop offset="55%" stopColor="oklch(0.55 0.08 210 / 0.06)" />
-            <stop offset="100%" stopColor="oklch(0.1 0.005 60 / 0)" />
+            <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.18" />
+            <stop offset="55%" stopColor="var(--foreground)" stopOpacity="0.06" />
+            <stop offset="100%" stopColor="var(--scrim)" stopOpacity="0" />
           </radialGradient>
+          <clipPath id="lens-peep">
+            <circle r="34" />
+          </clipPath>
         </defs>
 
         <rect
@@ -120,6 +114,19 @@ export function ApertureIntro({
           className="fill-scrim"
           mask="url(#iris-mask)"
         />
+
+        {/* Faint rangefinder preview inside the lens glass while hunting */}
+        <g clipPath="url(#lens-peep)" className="animate-intro-fade">
+          <image
+            href={preview.src}
+            x="-36"
+            y="-36"
+            width="72"
+            height="72"
+            preserveAspectRatio="xMidYMid slice"
+            opacity="0.32"
+          />
+        </g>
 
         {/* Optical lens coating reflection */}
         <circle r="46" fill="url(#lens-coat)" className="animate-intro-fade" />
