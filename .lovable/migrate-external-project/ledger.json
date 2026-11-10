@@ -1,0 +1,104 @@
+{
+  "source": "code-archive",
+  "artifact": "the-photographer-s-portfolio-main.zip",
+  "capabilities": [
+    {
+      "capability": "code",
+      "source": "TanStack Start v1 React 19 photography portfolio (/, /work, /reels, /about, /contact) with Darkroom theme, aperture intro, live viewfinder, category filter, lightbox, and video reels",
+      "outcome": "recreate",
+      "status": "in_progress",
+      "next_action": "Port routes, components, styling, and configuration into target project"
+    },
+    {
+      "capability": "uploaded_file_bytes",
+      "source": "44 Lovable CDN assets (24 photographs, 10 reel videos, 10 reel poster images) referenced via .asset.json pointers on source project 520a9e13-b642-438c-968e-f61429b39718",
+      "outcome": "migrate",
+      "status": "in_progress",
+      "next_action": "Download all 44 media files and upload into this project's Lovable CDN storage via lovable-assets create, updating src/assets/**/*.asset.json pointers"
+    },
+    {
+      "capability": "schema",
+      "source": "none (static editorial portfolio)",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "records",
+      "source": "24 curated photo stories in src/lib/photos.ts and 10 reel stories in src/lib/reels.ts (bundled in code, no external database)",
+      "outcome": "recreate",
+      "status": "in_progress",
+      "next_action": "Copy src/lib/photos.ts and src/lib/reels.ts with migrated asset pointers"
+    },
+    {
+      "capability": "auth_identities",
+      "source": "none",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "authorization",
+      "source": "none (all portfolio routes are public)",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "external_providers",
+      "source": "Google Fonts (Instrument Serif + Work Sans) and mailto: contact link (hello@rahulphotography.in)",
+      "outcome": "preserve",
+      "status": "in_progress",
+      "next_action": "Preserve font links in __root.tsx head() and mailto contact handler in /contact"
+    },
+    {
+      "capability": "public_endpoints",
+      "source": "none",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "callbacks",
+      "source": "none",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "webhooks",
+      "source": "none",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "schedules",
+      "source": "none",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "secrets",
+      "source": "none",
+      "outcome": "not_present",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "cutover",
+      "source": "Optional custom domain / real email update for hello@rahulphotography.in",
+      "outcome": "preserve",
+      "status": "verified",
+      "next_action": "none"
+    },
+    {
+      "capability": "verification",
+      "source": "Build, tests, route rendering, lightbox, filter tabs, video reels, and CDN media playback/display",
+      "outcome": "verify",
+      "status": "pending",
+      "next_action": "Run vitest, check build-errors.log, and verify routes + media in Playwright"
+    }
+  ]
+}
