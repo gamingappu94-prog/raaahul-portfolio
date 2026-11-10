@@ -1,28 +1,3 @@
-import cityCruiser from "@/assets/photos/city-cruiser.jpg.asset.json";
-import fieldOfCrosses from "@/assets/photos/field-of-crosses.jpg.asset.json";
-import fireKeeper from "@/assets/photos/fire-keeper.jpg.asset.json";
-import fishCartMono from "@/assets/photos/fish-cart-mono.jpg.asset.json";
-import fishCart from "@/assets/photos/fish-cart.jpg.asset.json";
-import fishSellerMono from "@/assets/photos/fish-seller-mono.jpg.asset.json";
-import fishSeller from "@/assets/photos/fish-seller.jpg.asset.json";
-import goldenHourTalk from "@/assets/photos/golden-hour-talk.jpg.asset.json";
-import harbourReflections from "@/assets/photos/harbour-reflections.jpg.asset.json";
-import lateShift from "@/assets/photos/late-shift.jpg.asset.json";
-import morningCatchMono from "@/assets/photos/morning-catch-mono.jpg.asset.json";
-import morningCatch from "@/assets/photos/morning-catch.jpg.asset.json";
-import prawnHandsMono from "@/assets/photos/prawn-hands-mono.jpg.asset.json";
-import prawnHands from "@/assets/photos/prawn-hands.jpg.asset.json";
-import riggingMono from "@/assets/photos/rigging-mono.jpg.asset.json";
-import rigging from "@/assets/photos/rigging.jpg.asset.json";
-import steelAndSilverMono from "@/assets/photos/steel-and-silver-mono.jpg.asset.json";
-import steelAndSilver from "@/assets/photos/steel-and-silver.jpg.asset.json";
-import theCatchMono from "@/assets/photos/the-catch-mono.jpg.asset.json";
-import theCatch from "@/assets/photos/the-catch.jpg.asset.json";
-import twoStrays from "@/assets/photos/two-strays.jpg.asset.json";
-import underTheBulb from "@/assets/photos/under-the-bulb.jpg.asset.json";
-import waitingByTheSea from "@/assets/photos/waiting-by-the-sea.jpg.asset.json";
-import midnightRider from "@/assets/photos/welders-spark.jpg.asset.json";
-
 export const categories = ["Market", "Coast", "Night", "Street", "Portrait"] as const;
 export type Category = (typeof categories)[number];
 
@@ -44,7 +19,7 @@ export const photos: Photo[] = [
   {
     slug: "fire-keeper",
     title: "The Fire Keeper",
-    src: fireKeeper.url,
+    src: "/photos/fire-keeper.jpg",
     ...V,
     category: "Night",
     story:
@@ -53,7 +28,7 @@ export const photos: Photo[] = [
   {
     slug: "harbour-reflections",
     title: "Harbour Reflections",
-    src: harbourReflections.url,
+    src: "/photos/harbour-reflections.jpg",
     width: 1413,
     height: 1600,
     category: "Coast",
@@ -63,7 +38,7 @@ export const photos: Photo[] = [
   {
     slug: "under-the-bulb",
     title: "Under the Bulb",
-    src: underTheBulb.url,
+    src: "/photos/under-the-bulb.jpg",
     ...V,
     category: "Night",
     story:
@@ -72,7 +47,7 @@ export const photos: Photo[] = [
   {
     slug: "waiting-by-the-sea",
     title: "Waiting by the Sea",
-    src: waitingByTheSea.url,
+    src: "/photos/waiting-by-the-sea.jpg",
     ...V,
     category: "Portrait",
     story:
@@ -81,7 +56,7 @@ export const photos: Photo[] = [
   {
     slug: "fish-seller",
     title: "The Fish Seller",
-    src: fishSeller.url,
+    src: "/photos/fish-seller.jpg",
     ...V,
     category: "Portrait",
     story:
@@ -90,7 +65,7 @@ export const photos: Photo[] = [
   {
     slug: "fish-seller-mono",
     title: "The Fish Seller, in Silver",
-    src: fishSellerMono.url,
+    src: "/photos/fish-seller-mono.jpg",
     ...V,
     category: "Portrait",
     mono: true,
@@ -100,7 +75,7 @@ export const photos: Photo[] = [
   {
     slug: "fish-cart",
     title: "The Long Push",
-    src: fishCart.url,
+    src: "/photos/fish-cart.jpg",
     ...V,
     category: "Market",
     story:
@@ -109,7 +84,7 @@ export const photos: Photo[] = [
   {
     slug: "fish-cart-mono",
     title: "The Long Push, in Mono",
-    src: fishCartMono.url,
+    src: "/photos/fish-cart-mono.jpg",
     ...V,
     category: "Market",
     mono: true,
@@ -119,7 +94,7 @@ export const photos: Photo[] = [
   {
     slug: "the-catch",
     title: "The Catch",
-    src: theCatch.url,
+    src: "/photos/the-catch.jpg",
     ...V,
     category: "Market",
     story:
@@ -128,7 +103,7 @@ export const photos: Photo[] = [
   {
     slug: "the-catch-mono",
     title: "The Catch, in Silver",
-    src: theCatchMono.url,
+    src: "/photos/the-catch-mono.jpg",
     ...V,
     category: "Market",
     mono: true,
@@ -138,7 +113,7 @@ export const photos: Photo[] = [
   {
     slug: "morning-catch",
     title: "Morning Catch",
-    src: morningCatch.url,
+    src: "/photos/morning-catch.jpg",
     ...V,
     category: "Market",
     story:
@@ -147,7 +122,7 @@ export const photos: Photo[] = [
   {
     slug: "morning-catch-mono",
     title: "Morning Catch, in Mono",
-    src: morningCatchMono.url,
+    src: "/photos/morning-catch-mono.jpg",
     ...V,
     category: "Market",
     mono: true,
@@ -157,7 +132,7 @@ export const photos: Photo[] = [
   {
     slug: "prawn-hands",
     title: "Hands That Sort",
-    src: prawnHands.url,
+    src: "/photos/prawn-hands.jpg",
     ...V,
     category: "Market",
     story:
@@ -166,7 +141,7 @@ export const photos: Photo[] = [
   {
     slug: "prawn-hands-mono",
     title: "Hands That Sort, in Mono",
-    src: prawnHandsMono.url,
+    src: "/photos/prawn-hands-mono.jpg",
     ...V,
     category: "Market",
     mono: true,
@@ -176,7 +151,7 @@ export const photos: Photo[] = [
   {
     slug: "steel-and-silver",
     title: "Steel & Silver",
-    src: steelAndSilver.url,
+    src: "/photos/steel-and-silver.jpg",
     ...V,
     category: "Market",
     story:
@@ -185,7 +160,7 @@ export const photos: Photo[] = [
   {
     slug: "steel-and-silver-mono",
     title: "Steel & Silver, in Mono",
-    src: steelAndSilverMono.url,
+    src: "/photos/steel-and-silver-mono.jpg",
     ...V,
     category: "Market",
     mono: true,
@@ -195,7 +170,7 @@ export const photos: Photo[] = [
   {
     slug: "rigging",
     title: "Above the Deck",
-    src: rigging.url,
+    src: "/photos/rigging.jpg",
     ...V,
     category: "Coast",
     story:
@@ -204,7 +179,7 @@ export const photos: Photo[] = [
   {
     slug: "rigging-mono",
     title: "Above the Deck, in Mono",
-    src: riggingMono.url,
+    src: "/photos/rigging-mono.jpg",
     ...V,
     category: "Coast",
     mono: true,
@@ -214,7 +189,7 @@ export const photos: Photo[] = [
   {
     slug: "late-shift",
     title: "Late Shift",
-    src: lateShift.url,
+    src: "/photos/late-shift.jpg",
     ...V,
     category: "Night",
     story:
@@ -223,7 +198,7 @@ export const photos: Photo[] = [
   {
     slug: "midnight-rider",
     title: "Midnight Rider",
-    src: midnightRider.url,
+    src: "/photos/welders-spark.jpg",
     width: 603,
     height: 1072,
     category: "Night",
@@ -233,7 +208,7 @@ export const photos: Photo[] = [
   {
     slug: "golden-hour-talk",
     title: "Golden Hour Talk",
-    src: goldenHourTalk.url,
+    src: "/photos/golden-hour-talk.jpg",
     ...V,
     category: "Street",
     story:
@@ -242,7 +217,7 @@ export const photos: Photo[] = [
   {
     slug: "city-cruiser",
     title: "City Cruiser",
-    src: cityCruiser.url,
+    src: "/photos/city-cruiser.jpg",
     ...V,
     category: "Street",
     story:
@@ -251,7 +226,7 @@ export const photos: Photo[] = [
   {
     slug: "field-of-crosses",
     title: "Field of Crosses",
-    src: fieldOfCrosses.url,
+    src: "/photos/field-of-crosses.jpg",
     width: 1599,
     height: 899,
     category: "Street",
@@ -261,7 +236,7 @@ export const photos: Photo[] = [
   {
     slug: "two-strays",
     title: "Two Strays",
-    src: twoStrays.url,
+    src: "/photos/two-strays.jpg",
     width: 1600,
     height: 1069,
     category: "Street",
