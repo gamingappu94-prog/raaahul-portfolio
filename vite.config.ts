@@ -6,7 +6,9 @@
 // Never set ssr.external or resolve.external: the Worker has no runtime module resolution, so
 // the build fails. Never add compression (compressPublicAssets, vite-plugin-compression):
 // hosting already compresses at the edge.
-// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
+// Ensure local dev server proxies asset requests to Lovable preview host
+process.env["LOVABLE_PREVIEW_HOST"] ||= "id-preview--bceb1d56-1722-47c4-a2a8-c51a9991c5a5.lovable.app";
+
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({

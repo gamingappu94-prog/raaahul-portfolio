@@ -1,12 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Aperture, ArrowRight } from "lucide-react";
+import { Aperture, ArrowRight, Heart, Sliders, Sparkles, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { categories, photos } from "@/lib/photos";
+import { categories, photos, type Photo } from "@/lib/photos";
 import { reels } from "@/lib/reels";
 import { ApertureIntro } from "@/components/aperture-intro";
 import { Viewfinder } from "@/components/viewfinder";
 import { Lightbox } from "@/components/lightbox";
+import { DarkroomEditorModal } from "@/components/darkroom-editor";
+import { PhotoCard } from "@/components/photo-card";
+import { usePhotoLike } from "@/lib/likes-store";
+import { cameraSound } from "@/lib/camera-audio";
 import {
   ContactSheetStrip,
   ReelsShowcase,
@@ -44,8 +48,131 @@ const STORY_SLUGS = [
   "golden-hour-talk",
 ] as const;
 
+function FeaturedStoryArticle({
+  photo,
+  index,
+  onOpen,
+  onEdit,
+}: {
+  photo: Photo;
+  index: number;
+  onOpen: () => void;
+  onEdit: (photo: Photo) => void;
+}) {
+  const { liked, count, toggle: toggleLike } = usePhotoLike(photo.slug);
+
+  return (
+    <article className="grid items-center gap-10 md:grid-cols-12">
+      <div className={`md:col-span-7 ${index % 2 ? "md:order-2 md:col-start-6" : ""}`}>
+        <div className="group relative block w-full overflow-hidden rounded-sm bg-muted text-left shadow-print">
+          <img
+            src={photo.src}
+            alt={photo.title}
+            width={photo.width}
+            height={photo.height}
+            loading="lazy"
+            className="develop max-h-[80vh] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+          />
+
+          {/* Top Overlaid Badges */}
+          <div className="absolute left-4 top-4 flex items-center gap-2">
+            <span className="rounded bg-black/75 px-2.5 py-1 font-mono text-[10px] tracking-widest text-primary backdrop-blur">
+              PLATE 0{index + 1}
+            </span>
+            <span className="rounded bg-black/75 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur">
+              {photo.category}
+            </span>
+          </div>
+
+          {/* Floating Like Button */}
+          <button
+            type="button"
+            onClick={toggleLike}
+            className={`absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium backdrop-blur transition-all ${
+              liked
+                ? "bg-red-500/20 text-red-400 ring-1 ring-red-500/60"
+                : "bg-black/70 text-white/80 hover:bg-black/90 hover:text-white"
+            }`}
+            title={liked ? "Unlike" : "Like this story"}
+          >
+            <Heart
+              className={`size-3.5 transition-transform duration-200 group-hover:scale-125 ${
+                liked ? "fill-red-500 text-red-500" : ""
+              }`}
+            />
+            <span className="font-mono text-xs">{count}</span>
+          </button>
+
+          {/* Action Overlay */}
+          <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/90 via-black/40 to-transparent p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <button
+              type="button"
+              onClick={() => {
+                cameraSound.playShutter();
+                onOpen();
+              }}
+              className="flex items-center gap-1.5 text-xs text-white/90 hover:text-primary transition-colors"
+            >
+              <Eye className="size-4" />
+              <span>Full Screen Inspection</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                cameraSound.playDial();
+                onEdit(photo);
+              }}
+              className="flex items-center gap-1.5 rounded border border-primary/50 bg-primary/20 px-3 py-1 font-mono text-xs uppercase tracking-wider text-primary backdrop-blur transition-all hover:bg-primary hover:text-primary-foreground"
+            >
+              <Sliders className="size-3.5" />
+              <span>Darkroom Studio</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className={`reveal md:col-span-4 ${index % 2 ? "md:order-1 md:col-start-1" : "md:col-start-9"}`}>
+        <span className="eyebrow text-primary">
+          Story {String(index + 1).padStart(2, "0")} · {photo.category}
+        </span>
+        <h3 className="mt-3 font-display text-4xl leading-tight md:text-5xl">{photo.title}</h3>
+        <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{photo.story}</p>
+
+        <div className="mt-6 flex flex-wrap items-center gap-4">
+          <button
+            type="button"
+            onClick={() => {
+              cameraSound.playShutter();
+              onOpen();
+            }}
+            className="eyebrow inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+          >
+            Open full frame <ArrowRight className="size-3.5" />
+          </button>
+
+          <span className="text-border">·</span>
+
+          <button
+            type="button"
+            onClick={() => {
+              cameraSound.playDial();
+              onEdit(photo);
+            }}
+            className="eyebrow inline-flex items-center gap-1.5 text-primary hover:underline transition-colors"
+          >
+            <Sliders className="size-3" />
+            Grade in Darkroom
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function Index() {
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [editingPhoto, setEditingPhoto] = useState<Photo | null>(null);
   const [introReplay, setIntroReplay] = useState(0);
 
   useEffect(() => {
@@ -86,48 +213,55 @@ function Index() {
   return (
     <>
       <ApertureIntro replayNonce={introReplay} />
-      {/* Hero */}
-      <section className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-20 pt-28 md:px-10 lg:grid-cols-12 lg:items-end lg:pt-32">
-        <div className="min-w-0 lg:col-span-7">
+
+      {/* Hero Section: Perfectly aligned grid items-center */}
+      <section className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-16 pt-24 md:px-10 lg:grid-cols-12 lg:gap-12 lg:pt-28">
+        <div className="min-w-0 lg:col-span-7 flex flex-col justify-center">
           <div className="flex flex-wrap items-center gap-4 animate-rise">
             <p className="eyebrow text-primary">
               Street & documentary · Chennai, India
             </p>
             <button
               type="button"
-              onClick={() => setIntroReplay((n) => n + 1)}
-              className="eyebrow inline-flex items-center gap-1.5 border border-border px-2.5 py-1 text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+              onClick={() => {
+                cameraSound.playShutter();
+                setIntroReplay((n) => n + 1);
+              }}
+              className="eyebrow inline-flex items-center gap-1.5 border border-border px-2.5 py-1 text-muted-foreground transition-colors hover:border-primary hover:text-primary rounded-sm"
             >
               <Aperture className="size-3 text-primary" />
               Replay lens intro
             </button>
           </div>
+
           <h1
-            className="mt-6 font-display text-6xl leading-[0.95] animate-rise sm:text-7xl lg:text-[8.5rem]"
+            className="mt-6 font-display text-5xl leading-[0.98] animate-rise sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem]"
             style={{ animationDelay: "120ms" }}
           >
-            The soul of <em className="text-primary">Chennai</em>, one frame at a time.
+            The soul of <em className="text-primary not-italic">Chennai</em>, one frame at a time.
           </h1>
+
           <p
-            className="mt-8 max-w-lg text-lg leading-relaxed text-muted-foreground animate-rise"
+            className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground animate-rise"
             style={{ animationDelay: "240ms" }}
           >
             Fish markets at dawn, fires on night streets, faces by the sea. Every picture here
             comes with the human story behind the shutter.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4 animate-rise" style={{ animationDelay: "360ms" }}>
-            <Button asChild size="lg">
+
+          <div className="mt-8 flex flex-wrap gap-4 animate-rise" style={{ animationDelay: "360ms" }}>
+            <Button asChild size="lg" className="rounded-sm">
               <Link to="/work">
-                Explore all {photos.length} stories <ArrowRight />
+                Explore all {photos.length} stories <ArrowRight className="ml-1 size-4" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="rounded-sm">
               <Link to="/reels">Watch {reels.length} reels</Link>
             </Button>
           </div>
 
           <div
-            className="mt-14 flex items-center gap-8 border-t border-border pt-6 animate-rise"
+            className="mt-12 flex items-center gap-8 border-t border-border pt-6 animate-rise"
             style={{ animationDelay: "480ms" }}
           >
             <div className="flex items-center gap-3">
@@ -143,8 +277,14 @@ function Index() {
             </div>
           </div>
         </div>
-        <div className="min-w-0 lg:col-span-5 animate-rise" style={{ animationDelay: "200ms" }}>
-          <Viewfinder startDelay={5200} onSelect={openBySlug} />
+
+        {/* Hero Camera Viewfinder: Centered and Aligned */}
+        <div className="min-w-0 lg:col-span-5 flex items-center justify-center animate-rise" style={{ animationDelay: "200ms" }}>
+          <Viewfinder
+            startDelay={5200}
+            onSelect={openBySlug}
+            onEdit={(p) => setEditingPhoto(p)}
+          />
         </div>
       </section>
 
@@ -156,7 +296,7 @@ function Index() {
         onOpenSlug={openBySlug}
       />
 
-      {/* Featured stories */}
+      {/* Featured stories with like counter and darkroom triggers */}
       <section className="border-t border-border">
         <div className="mx-auto max-w-7xl px-5 py-24 md:px-10">
           <div className="reveal flex items-end justify-between gap-6">
@@ -171,46 +311,13 @@ function Index() {
 
           <div className="mt-16 space-y-28">
             {heroStories.map((p, i) => (
-              <article
+              <FeaturedStoryArticle
                 key={p.slug}
-                className="grid items-center gap-10 md:grid-cols-12"
-              >
-                <div className={`md:col-span-7 ${i % 2 ? "md:order-2 md:col-start-6" : ""}`}>
-                  <button
-                    type="button"
-                    onClick={() => openBySlug(p.slug)}
-                    className="group relative block w-full overflow-hidden bg-muted text-left shadow-print focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <img
-                      src={p.src}
-                      alt={p.title}
-                      width={p.width}
-                      height={p.height}
-                      loading="lazy"
-                      className="develop max-h-[82vh] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                    />
-                    <span className="hud absolute bottom-4 right-4 bg-scrim/75 px-2.5 py-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      Inspect plate ↗
-                    </span>
-                  </button>
-                </div>
-                <div
-                  className={`reveal md:col-span-4 ${i % 2 ? "md:order-1 md:col-start-1" : "md:col-start-9"}`}
-                >
-                  <span className="eyebrow text-primary">
-                    Story {String(i + 1).padStart(2, "0")} · {p.category}
-                  </span>
-                  <h3 className="mt-4 font-display text-4xl leading-tight md:text-5xl">{p.title}</h3>
-                  <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{p.story}</p>
-                  <button
-                    type="button"
-                    onClick={() => openBySlug(p.slug)}
-                    className="eyebrow mt-6 inline-flex items-center gap-2 text-foreground hover:text-primary"
-                  >
-                    Open full frame <ArrowRight className="size-3.5" />
-                  </button>
-                </div>
-              </article>
+                photo={p}
+                index={i}
+                onOpen={() => openBySlug(p.slug)}
+                onEdit={(photo) => setEditingPhoto(photo)}
+              />
             ))}
           </div>
         </div>
@@ -219,7 +326,7 @@ function Index() {
       {/* Silver Gelatin Monochrome Darkroom Band */}
       <SilverGelatinBand monos={monoPhotos} onOpenSlug={openBySlug} />
 
-      {/* Colour Salon Wall — remaining original colour frames */}
+      {/* Colour Salon Wall */}
       <section className="border-t border-border">
         <div className="mx-auto max-w-7xl px-5 py-24 md:px-10">
           <div className="reveal flex flex-wrap items-end justify-between gap-6">
@@ -229,45 +336,22 @@ function Index() {
                 Markets, rigging & night streets
               </h2>
             </div>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="rounded-sm">
               <Link to="/work">
-                Filter by chapter <ArrowRight />
+                Filter by chapter <ArrowRight className="ml-1 size-4" />
               </Link>
             </Button>
           </div>
 
-          <div className="mt-14 columns-1 gap-6 sm:columns-2 lg:columns-3">
+          <div className="mt-14 columns-1 gap-8 sm:columns-2 lg:columns-3">
             {streetGrid.map((p, i) => (
-              <figure
+              <PhotoCard
                 key={p.slug}
-                style={{ ["--reveal-delay" as string]: `${(i % 3) * 90}ms` }}
-                className="reveal group mb-8 break-inside-avoid"
-              >
-                <button
-                  type="button"
-                  onClick={() => openBySlug(p.slug)}
-                  className="relative block w-full overflow-hidden bg-muted text-left shadow-print focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  <img
-                    src={p.src}
-                    alt={p.title}
-                    width={p.width}
-                    height={p.height}
-                    loading="lazy"
-                    className="develop h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-scrim-gradient p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <span className="eyebrow text-primary">{p.category}</span>
-                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-foreground/90">
-                      {p.story}
-                    </p>
-                  </div>
-                </button>
-                <figcaption className="mt-3 flex items-baseline justify-between gap-3">
-                  <span className="font-display text-2xl">{p.title}</span>
-                  <span className="eyebrow">{p.category}</span>
-                </figcaption>
-              </figure>
+                photo={p}
+                index={i}
+                onOpen={() => openBySlug(p.slug)}
+                onEdit={(photo) => setEditingPhoto(photo)}
+              />
             ))}
           </div>
         </div>
@@ -291,10 +375,10 @@ function Index() {
               Chennai.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button asChild size="lg">
+              <Button asChild size="lg" className="rounded-sm">
                 <Link to="/about">About Rahul</Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
+              <Button asChild size="lg" variant="outline" className="rounded-sm">
                 <Link to="/contact">Get in touch</Link>
               </Button>
             </div>
@@ -302,7 +386,21 @@ function Index() {
         </div>
       </section>
 
-      <Lightbox photos={photos} index={lightboxIdx} onChange={setLightboxIdx} />
+      {/* Full-screen Lightbox with like & grading buttons */}
+      <Lightbox
+        photos={photos}
+        index={lightboxIdx}
+        onChange={setLightboxIdx}
+        onEdit={(p) => setEditingPhoto(p)}
+      />
+
+      {/* Interactive Darkroom Studio / Editor Modal */}
+      <DarkroomEditorModal
+        photo={editingPhoto}
+        allPhotos={photos}
+        onClose={() => setEditingPhoto(null)}
+        onNavigate={(p) => setEditingPhoto(p)}
+      />
     </>
   );
 }
