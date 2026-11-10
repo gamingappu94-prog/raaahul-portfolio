@@ -88,6 +88,15 @@ export function ApertureIntro({
       className="fixed inset-0 z-[70] animate-intro-out"
       onClick={() => setShow(false)}
     >
+      {/* Live Chennai street frame glimpsed through the iris hole as the lens hunts */}
+      <div className="pointer-events-none absolute inset-0 grid place-items-center animate-intro-fade">
+        <img
+          src={preview.src}
+          alt=""
+          className="h-[34vmin] w-[34vmin] rounded-full object-cover opacity-80 transition-all duration-700"
+        />
+      </div>
+
       <svg
         aria-hidden
         className="absolute inset-0 h-full w-full"
@@ -106,11 +115,6 @@ export function ApertureIntro({
             <stop offset="55%" stopColor="var(--foreground)" stopOpacity="0.06" />
             <stop offset="100%" stopColor="var(--scrim)" stopOpacity="0" />
           </radialGradient>
-          <clipPath id="iris-peep">
-            <g className="animate-iris-open">
-              <polygon points={hole} />
-            </g>
-          </clipPath>
         </defs>
 
         <rect
@@ -121,19 +125,6 @@ export function ApertureIntro({
           className="fill-scrim"
           mask="url(#iris-mask)"
         />
-
-        {/* Live Chennai photograph glimpsed inside the opening iris blades */}
-        <g clipPath="url(#iris-peep)" className="animate-intro-fade">
-          <image
-            href={preview.src}
-            x="-55"
-            y="-55"
-            width="110"
-            height="110"
-            preserveAspectRatio="xMidYMid slice"
-            opacity="0.72"
-          />
-        </g>
 
         {/* Optical lens coating reflection */}
         <circle r="46" fill="url(#lens-coat)" className="animate-intro-fade" />
