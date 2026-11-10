@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Portfolio photos and reels are CDN assets (`src/assets/photos`, `src/assets/reels` `.asset.json` pointers) listed with their stories in `src/lib/photos.ts` and `src/lib/reels.ts` — add new work there so every page picks it up.

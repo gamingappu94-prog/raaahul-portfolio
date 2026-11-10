@@ -15,4 +15,18 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Pre-bundle UI deps up front so Vite never re-optimizes mid-session
+    // (a late re-optimization mixes React copies and crashes with "reading 'useCallback'").
+    optimizeDeps: {
+      include: [
+        "@radix-ui/react-slot",
+        "@radix-ui/react-label",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge",
+        "lucide-react",
+      ],
+    },
+  },
 });
