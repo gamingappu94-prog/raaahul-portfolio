@@ -87,7 +87,7 @@ function Index() {
       <ApertureIntro />
       {/* Hero */}
       <section className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-20 pt-28 md:px-10 lg:grid-cols-12 lg:items-end lg:pt-32">
-        <div className="lg:col-span-7">
+        <div className="min-w-0 lg:col-span-7">
           <p className="eyebrow animate-rise text-primary">
             Street & documentary · Chennai, India
           </p>
@@ -132,7 +132,7 @@ function Index() {
             </div>
           </div>
         </div>
-        <div className="lg:col-span-5 animate-rise" style={{ animationDelay: "200ms" }}>
+        <div className="min-w-0 lg:col-span-5 animate-rise" style={{ animationDelay: "200ms" }}>
           <Viewfinder startDelay={2600} onSelect={openBySlug} />
         </div>
       </section>

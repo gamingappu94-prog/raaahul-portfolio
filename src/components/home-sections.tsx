@@ -118,9 +118,9 @@ export function SilverGelatinBand({
               "lg:col-span-5",
               "lg:col-span-4 lg:mt-16",
               "lg:col-span-3",
-              "lg:col-span-3 lg:-mt-10",
+              "lg:col-span-3",
               "lg:col-span-5",
-              "lg:col-span-4 lg:-mt-12",
+              "lg:col-span-4 lg:mt-8",
               "lg:col-span-6",
             ];
             return (
@@ -190,7 +190,7 @@ export function ReelsShowcase({ reels }: { reels: Reel[] }) {
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="none"
                 onMouseEnter={(e) => void e.currentTarget.play().catch(() => {})}
                 onMouseLeave={(e) => {
                   e.currentTarget.pause();
