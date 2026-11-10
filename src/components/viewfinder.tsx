@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useCallback, useEffect, useState } from "react";
+import { Camera, ChevronLeft, ChevronRight } from "lucide-react";
 import { photos, type Photo } from "@/lib/photos";
 
 type Shot = { slug: string; shutter: string; f: string; iso: string; ev: number };
@@ -8,10 +8,13 @@ type Shot = { slug: string; shutter: string; f: string; iso: string; ev: number 
 const SHOTS: Shot[] = [
   { slug: "fire-keeper", shutter: "1/125", f: "2.8", iso: "1600", ev: -0.7 },
   { slug: "waiting-by-the-sea", shutter: "1/500", f: "5.6", iso: "200", ev: 0.3 },
+  { slug: "harbour-reflections", shutter: "1/250", f: "8", iso: "400", ev: 0 },
   { slug: "under-the-bulb", shutter: "1/60", f: "1.8", iso: "3200", ev: -1 },
   { slug: "golden-hour-talk", shutter: "1/320", f: "4", iso: "100", ev: 0.7 },
-  { slug: "harbour-reflections", shutter: "1/250", f: "8", iso: "400", ev: 0 },
+  { slug: "the-catch", shutter: "1/400", f: "4.5", iso: "320", ev: 0.2 },
+  { slug: "morning-catch", shutter: "1/640", f: "5.6", iso: "200", ev: 0.4 },
   { slug: "late-shift", shutter: "1/80", f: "2", iso: "2500", ev: -0.3 },
+  { slug: "midnight-rider", shutter: "1/100", f: "1.8", iso: "2000", ev: -0.5 },
 ];
 
 const frames = SHOTS.map((s) => ({
@@ -22,35 +25,45 @@ const frames = SHOTS.map((s) => ({
 const INTERVAL = 4800;
 
 /** A camera viewfinder that "shoots" through Rahul's frames with a shutter blink. */
-export function Viewfinder({ startDelay = 0 }: { startDelay?: number }) {
+export function Viewfinder({
+  startDelay = 0,
+  onSelect,
+}: {
+  startDelay?: number;
+  onSelect?: (slug: string) => void;
+}) {
   const [idx, setIdx] = useState(0);
   const [blink, setBlink] = useState(false);
+
+  const advance = useCallback((delta: number) => {
+    setBlink(true);
+    window.setTimeout(() => {
+      setIdx((i) => (i + delta + frames.length) % frames.length);
+    }, 110);
+    window.setTimeout(() => setBlink(false), 230);
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let interval: number | undefined;
-    const timers: number[] = [];
-    const shoot = () => {
-      setBlink(true);
-      timers.push(window.setTimeout(() => setIdx((i) => (i + 1) % frames.length), 130));
-      timers.push(window.setTimeout(() => setBlink(false), 240));
-    };
     const start = window.setTimeout(() => {
-      interval = window.setInterval(shoot, INTERVAL);
+      interval = window.setInterval(() => advance(1), INTERVAL);
     }, startDelay);
     return () => {
       window.clearTimeout(start);
       window.clearInterval(interval);
-      timers.forEach((t) => window.clearTimeout(t));
     };
-  }, [startDelay]);
+  }, [startDelay, advance]);
 
   const frame = frames[idx]!;
   const remaining = String(photos.length - idx).padStart(3, "0");
 
   return (
     <figure>
-      <div className="relative aspect-[4/5] overflow-hidden bg-muted shadow-print">
+      <div
+        className="group relative aspect-[4/5] cursor-pointer overflow-hidden bg-muted shadow-print"
+        onClick={() => onSelect?.(frame.slug)}
+      >
         {frames.map((f, i) => (
           <img
             key={f.slug}
@@ -128,11 +141,41 @@ export function Viewfinder({ startDelay = 0 }: { startDelay?: number }) {
           }`}
         />
       </div>
-      <figcaption className="mt-3 flex justify-between eyebrow">
-        <Link to="/work" className="hover:text-primary">
+      <figcaption className="mt-3 flex items-center justify-between gap-3 eyebrow">
+        <button
+          type="button"
+          onClick={() => onSelect?.(frame.slug)}
+          className="truncate text-left hover:text-primary"
+        >
           Frame {String(idx + 1).padStart(2, "0")} — {frame.photo.title}
-        </Link>
-        <span>{frame.photo.category}</span>
+        </button>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <button
+            type="button"
+            aria-label="Previous viewfinder frame"
+            onClick={() => advance(-1)}
+            className="flex size-7 items-center justify-center border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+          >
+            <ChevronLeft className="size-3.5" />
+          </button>
+          <button
+            type="button"
+            aria-label="Snap next frame"
+            onClick={() => advance(1)}
+            className="flex h-7 items-center gap-1.5 border border-border px-2 text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+          >
+            <Camera className="size-3" />
+            <span>Shutter</span>
+          </button>
+          <button
+            type="button"
+            aria-label="Next viewfinder frame"
+            onClick={() => advance(1)}
+            className="flex size-7 items-center justify-center border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+          >
+            <ChevronRight className="size-3.5" />
+          </button>
+        </div>
       </figcaption>
     </figure>
   );
