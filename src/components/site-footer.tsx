@@ -29,9 +29,9 @@ export function SiteFooter() {
               href="https://instagram.com/rahhuulll.l"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 transition-colors hover:text-rose-400"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
             >
-              <Instagram className="size-3.5 text-rose-400" />
+              <Instagram className="size-3.5 text-primary" />
               <span>@rahhuulll.l</span>
             </a>
           </div>

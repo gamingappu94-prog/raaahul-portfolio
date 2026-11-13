@@ -4,14 +4,15 @@ import {
   Phone,
   Mail,
   Instagram,
-  MessageCircle,
   Copy,
   Check,
   ArrowUpRight,
   MapPin,
   Clock,
-  Sparkles,
   Camera,
+  Compass,
+  Printer,
+  Sparkles,
 } from "lucide-react";
 import { photos } from "@/lib/photos";
 import { cameraSound } from "@/lib/camera-audio";
@@ -31,13 +32,13 @@ const CONTACT_INFO = {
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Rahul — Chennai Street & Documentary Photographer" },
+      { title: "Contact Rahul — Chennai Street & Documentary Photography" },
       {
         name: "description",
         content:
           "Connect directly with Rahul for street photography assignments, editorial photo walks, prints, or creative collaborations across Chennai.",
       },
-      { property: "og:title", content: "Contact Rahul — Chennai Photographer" },
+      { property: "og:title", content: "Contact Rahul — Chennai Photography" },
       {
         property: "og:description",
         content:
@@ -52,7 +53,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const bg = photos.find((p) => p.slug === "golden-hour-talk") || photos[0]!;
+  const featuredPhoto = photos.find((p) => p.slug === "fire-keeper") || photos[0]!;
 
   const handleCopy = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -64,281 +65,313 @@ function ContactPage() {
   };
 
   return (
-    <section className="mx-auto max-w-7xl px-5 pb-24 pt-28 md:px-10 lg:pt-32">
-      <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
-        {/* Left Column: Contact Header & Main Action Hub */}
-        <div className="lg:col-span-7">
-          <div className="flex items-center gap-2">
-            <span className="eyebrow text-primary">Direct Communication · Studio Rahul</span>
-            <span className="text-muted-foreground/40">·</span>
-            <span className="flex items-center gap-1 font-mono text-[11px] text-emerald-400">
-              <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Available for Commissions
-            </span>
+    <div className="mx-auto max-w-7xl px-5 pb-28 pt-28 md:px-10 lg:pt-36">
+      {/* 1. Editorial Header Section */}
+      <div className="max-w-3xl">
+        <div className="flex items-center gap-2 font-mono text-xs text-primary">
+          <span className="size-1.5 rounded-full bg-primary animate-pulse" />
+          <span className="uppercase tracking-widest font-semibold">DIRECT COMMUNICATIONS</span>
+          <span className="text-muted-foreground/40">·</span>
+          <span className="text-muted-foreground uppercase tracking-wider">CHENNAI STUDIO</span>
+        </div>
+
+        <h1 className="mt-4 font-display text-5xl leading-[0.98] sm:text-6xl md:text-7xl lg:text-8xl text-foreground">
+          Let’s make something <em className="text-primary not-italic">timeless</em>.
+        </h1>
+
+        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+          Available for documentary assignments, editorial photo walks, archival prints, and
+          creative commissions across Chennai. Reach out directly through your preferred channel
+          below.
+        </p>
+      </div>
+
+      {/* 2. The Three Main Contact Channels — Completely Unified in Styling & Proportions */}
+      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {/* Card 1: Phone & WhatsApp */}
+        <div className="group relative flex flex-col justify-between rounded-sm border border-border/70 bg-card/50 p-6 shadow-print transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:bg-card/80">
+          <div>
+            <div className="flex items-center justify-between border-b border-border/50 pb-4">
+              <span className="font-mono text-[11px] tracking-widest text-primary font-semibold">
+                01 / DIRECT LINE
+              </span>
+              <span className="flex size-8 items-center justify-center rounded-sm border border-border/70 bg-background text-primary">
+                <Phone className="size-4" />
+              </span>
+            </div>
+
+            <div className="mt-6">
+              <span className="eyebrow block text-muted-foreground">Phone & WhatsApp</span>
+              <a
+                href={`tel:${CONTACT_INFO.rawPhone}`}
+                className="mt-1.5 block font-mono text-xl font-semibold tracking-tight text-foreground transition-colors hover:text-primary sm:text-2xl"
+              >
+                {CONTACT_INFO.phone}
+              </a>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                For urgent inquiries, direct phone conversations, and quick WhatsApp messaging.
+              </p>
+            </div>
           </div>
 
-          <h1 className="mt-4 font-display text-5xl leading-[0.98] sm:text-6xl md:text-7xl">
-            Let's connect & tell a <em className="text-primary not-italic">story</em>.
-          </h1>
+          <div className="mt-8 flex items-center gap-2 border-t border-border/50 pt-5">
+            <a
+              href={`tel:${CONTACT_INFO.rawPhone}`}
+              className="flex-1 inline-flex h-9 items-center justify-center gap-1.5 rounded-sm border border-border bg-background px-3 font-mono text-xs font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              <span>Call</span>
+            </a>
 
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Whether you want to discuss a documentary assignment, book an editorial photo walk,
-            order fine art prints, or collaborate on a creative project in Chennai — reach out
-            directly through any channel below.
+            <a
+              href={CONTACT_INFO.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex h-9 items-center justify-center gap-1.5 rounded-sm border border-primary/40 bg-primary/10 px-3 font-mono text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+            >
+              <span>WhatsApp</span>
+              <ArrowUpRight className="size-3" />
+            </a>
+
+            <button
+              type="button"
+              onClick={() => handleCopy(CONTACT_INFO.rawPhone, "phone")}
+              title="Copy phone number"
+              aria-label="Copy phone number"
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-sm border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+            >
+              {copiedKey === "phone" ? (
+                <Check className="size-3.5 text-primary" />
+              ) : (
+                <Copy className="size-3.5" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Card 2: Email Inquiries */}
+        <div className="group relative flex flex-col justify-between rounded-sm border border-border/70 bg-card/50 p-6 shadow-print transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:bg-card/80">
+          <div>
+            <div className="flex items-center justify-between border-b border-border/50 pb-4">
+              <span className="font-mono text-[11px] tracking-widest text-primary font-semibold">
+                02 / ASSIGNMENTS
+              </span>
+              <span className="flex size-8 items-center justify-center rounded-sm border border-border/70 bg-background text-primary">
+                <Mail className="size-4" />
+              </span>
+            </div>
+
+            <div className="mt-6">
+              <span className="eyebrow block text-muted-foreground">Email Address</span>
+              <a
+                href={`mailto:${CONTACT_INFO.email}`}
+                className="mt-1.5 block font-mono text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-primary break-all"
+              >
+                {CONTACT_INFO.email}
+              </a>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Best for project briefs, editorial assignments, press licensing, and print orders.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-8 flex items-center gap-2 border-t border-border/50 pt-5">
+            <a
+              href={`mailto:${CONTACT_INFO.email}`}
+              className="flex-1 inline-flex h-9 items-center justify-center gap-1.5 rounded-sm border border-primary/40 bg-primary/10 px-3 font-mono text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+            >
+              <Mail className="size-3.5" />
+              <span>Send Email</span>
+              <ArrowUpRight className="size-3" />
+            </a>
+
+            <button
+              type="button"
+              onClick={() => handleCopy(CONTACT_INFO.email, "email")}
+              title="Copy email address"
+              aria-label="Copy email address"
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-sm border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+            >
+              {copiedKey === "email" ? (
+                <Check className="size-3.5 text-primary" />
+              ) : (
+                <Copy className="size-3.5" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Card 3: Instagram Journal */}
+        <div className="group relative flex flex-col justify-between rounded-sm border border-border/70 bg-card/50 p-6 shadow-print transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:bg-card/80">
+          <div>
+            <div className="flex items-center justify-between border-b border-border/50 pb-4">
+              <span className="font-mono text-[11px] tracking-widest text-primary font-semibold">
+                03 / VISUAL JOURNAL
+              </span>
+              <span className="flex size-8 items-center justify-center rounded-sm border border-border/70 bg-background text-primary">
+                <Instagram className="size-4" />
+              </span>
+            </div>
+
+            <div className="mt-6">
+              <span className="eyebrow block text-muted-foreground">Instagram Handle</span>
+              <a
+                href={CONTACT_INFO.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1.5 block font-mono text-xl font-semibold tracking-tight text-foreground transition-colors hover:text-primary sm:text-2xl"
+              >
+                @{CONTACT_INFO.instagram}
+              </a>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Daily 35mm street reels, behind-the-lens fieldwork, and open Instagram DMs.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-8 flex items-center gap-2 border-t border-border/50 pt-5">
+            <a
+              href={CONTACT_INFO.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex h-9 items-center justify-center gap-1.5 rounded-sm border border-primary/40 bg-primary/10 px-3 font-mono text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+            >
+              <Instagram className="size-3.5" />
+              <span>View Profile</span>
+              <ArrowUpRight className="size-3" />
+            </a>
+
+            <button
+              type="button"
+              onClick={() => handleCopy(`@${CONTACT_INFO.instagram}`, "instagram")}
+              title="Copy Instagram handle"
+              aria-label="Copy Instagram handle"
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-sm border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+            >
+              {copiedKey === "instagram" ? (
+                <Check className="size-3.5 text-primary" />
+              ) : (
+                <Copy className="size-3.5" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. "Something Missing" Section: Studio Commission Scope & Exhibition Print */}
+      <div className="mt-16 grid gap-10 border-t border-border/70 pt-16 lg:grid-cols-12 lg:items-center">
+        {/* Left: What We Can Work On Together */}
+        <div className="lg:col-span-7">
+          <span className="eyebrow text-primary">Collaboration & Services</span>
+          <h2 className="mt-3 font-display text-3xl font-medium text-foreground sm:text-4xl md:text-5xl">
+            Ways we can collaborate
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            Whether for independent cultural projects, global publications, or personal collector
+            prints, every engagement is approached with documentary integrity and human empathy.
           </p>
 
-          {/* Main Contact Channels */}
-          <div className="mt-10 space-y-4">
-            {/* 1. Phone & WhatsApp Card */}
-            <div className="group relative rounded-sm border border-border/80 bg-card/75 p-6 shadow-print transition-all duration-300 hover:border-primary/60 hover:bg-card">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-start gap-4">
-                  <div className="flex size-12 shrink-0 items-center justify-center rounded-sm border border-border bg-background/80 text-primary">
-                    <Phone className="size-5" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="eyebrow text-primary">Phone & WhatsApp</span>
-                      <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-primary">
-                        Direct Line
-                      </span>
-                    </div>
-                    <a
-                      href={`tel:${CONTACT_INFO.rawPhone}`}
-                      className="mt-1 block font-mono text-xl font-semibold tracking-wide text-foreground transition-colors hover:text-primary sm:text-2xl"
-                    >
-                      {CONTACT_INFO.phone}
-                    </a>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      Direct phone calls & WhatsApp messaging
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 sm:self-center">
-                  <a
-                    href={`tel:${CONTACT_INFO.rawPhone}`}
-                    className="inline-flex h-9 items-center gap-1.5 rounded-sm border border-border bg-background px-3 font-mono text-xs text-foreground transition-colors hover:border-primary hover:text-primary"
-                  >
-                    <Phone className="size-3.5" />
-                    <span>Call</span>
-                  </a>
-
-                  <a
-                    href={CONTACT_INFO.whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-9 items-center gap-1.5 rounded-sm border border-emerald-500/30 bg-emerald-500/10 px-3.5 font-mono text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/20 hover:text-emerald-300"
-                  >
-                    <MessageCircle className="size-3.5" />
-                    <span>WhatsApp</span>
-                    <ArrowUpRight className="size-3 opacity-70" />
-                  </a>
-
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(CONTACT_INFO.rawPhone, "phone")}
-                    aria-label="Copy phone number"
-                    title="Copy phone number"
-                    className="inline-flex size-9 items-center justify-center rounded-sm border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
-                  >
-                    {copiedKey === "phone" ? (
-                      <Check className="size-4 text-primary" />
-                    ) : (
-                      <Copy className="size-4" />
-                    )}
-                  </button>
-                </div>
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="rounded-sm border border-border/50 bg-card/30 p-5">
+              <div className="flex items-center gap-2 text-primary font-mono text-xs font-semibold uppercase tracking-wider">
+                <Camera className="size-4" />
+                <span>Documentary & Editorial</span>
               </div>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                In-depth photo stories, press assignments, cultural archives, and on-location
+                reportage across Tamil Nadu.
+              </p>
             </div>
 
-            {/* 2. Direct Email Card */}
-            <div className="group relative rounded-sm border border-border/80 bg-card/75 p-6 shadow-print transition-all duration-300 hover:border-primary/60 hover:bg-card">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-start gap-4">
-                  <div className="flex size-12 shrink-0 items-center justify-center rounded-sm border border-border bg-background/80 text-primary">
-                    <Mail className="size-5" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="eyebrow text-primary">Direct Email</span>
-                      <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
-                        Assignments & Inquiries
-                      </span>
-                    </div>
-                    <a
-                      href={`mailto:${CONTACT_INFO.email}`}
-                      className="mt-1 block font-mono text-lg font-medium tracking-tight text-foreground transition-colors hover:text-primary sm:text-xl"
-                    >
-                      {CONTACT_INFO.email}
-                    </a>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      Best for briefs, editorial inquiries, and print licensing
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 sm:self-center">
-                  <a
-                    href={`mailto:${CONTACT_INFO.email}`}
-                    className="inline-flex h-9 items-center gap-1.5 rounded-sm border border-primary/50 bg-primary/10 px-3.5 font-mono text-xs font-semibold uppercase tracking-wider text-primary transition-all hover:bg-primary hover:text-primary-foreground"
-                  >
-                    <Mail className="size-3.5" />
-                    <span>Send Email</span>
-                    <ArrowUpRight className="size-3" />
-                  </a>
-
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(CONTACT_INFO.email, "email")}
-                    aria-label="Copy email address"
-                    title="Copy email address"
-                    className="inline-flex size-9 items-center justify-center rounded-sm border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
-                  >
-                    {copiedKey === "email" ? (
-                      <Check className="size-4 text-primary" />
-                    ) : (
-                      <Copy className="size-4" />
-                    )}
-                  </button>
-                </div>
+            <div className="rounded-sm border border-border/50 bg-card/30 p-5">
+              <div className="flex items-center gap-2 text-primary font-mono text-xs font-semibold uppercase tracking-wider">
+                <Compass className="size-4" />
+                <span>Chennai Photo Walks</span>
               </div>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Private, 1-on-1 dawn or twilight street photography walks through Kasimedu harbor,
+                Mylapore, and the old markets.
+              </p>
             </div>
 
-            {/* 3. Instagram Handle Card */}
-            <div className="group relative rounded-sm border border-border/80 bg-card/75 p-6 shadow-print transition-all duration-300 hover:border-primary/60 hover:bg-card">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-start gap-4">
-                  <div className="flex size-12 shrink-0 items-center justify-center rounded-sm border border-border bg-background/80 text-primary">
-                    <Instagram className="size-5" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="eyebrow text-primary">Instagram</span>
-                      <span className="rounded bg-rose-500/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-rose-400">
-                        Visual Journal
-                      </span>
-                    </div>
-                    <a
-                      href={CONTACT_INFO.instagramUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 block font-mono text-xl font-semibold text-foreground transition-colors hover:text-primary sm:text-2xl"
-                    >
-                      @{CONTACT_INFO.instagram}
-                    </a>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      Follow daily street reels, behind-the-scenes & direct messages
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2 sm:self-center">
-                  <a
-                    href={CONTACT_INFO.instagramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-9 items-center gap-1.5 rounded-sm border border-rose-500/40 bg-rose-500/10 px-3.5 font-mono text-xs font-medium text-rose-400 transition-colors hover:bg-rose-500/20 hover:text-rose-300"
-                  >
-                    <Instagram className="size-3.5" />
-                    <span>View Profile</span>
-                    <ArrowUpRight className="size-3 opacity-70" />
-                  </a>
-
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(`@${CONTACT_INFO.instagram}`, "instagram")}
-                    aria-label="Copy Instagram handle"
-                    title="Copy Instagram handle"
-                    className="inline-flex size-9 items-center justify-center rounded-sm border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
-                  >
-                    {copiedKey === "instagram" ? (
-                      <Check className="size-4 text-primary" />
-                    ) : (
-                      <Copy className="size-4" />
-                    )}
-                  </button>
-                </div>
+            <div className="rounded-sm border border-border/50 bg-card/30 p-5">
+              <div className="flex items-center gap-2 text-primary font-mono text-xs font-semibold uppercase tracking-wider">
+                <Printer className="size-4" />
+                <span>Fine Art Prints</span>
               </div>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Signed, museum-grade archival pigment prints (Hahnemühle Photo Rag & Silver Gelatin
+                baryta) for private collections.
+              </p>
+            </div>
+
+            <div className="rounded-sm border border-border/50 bg-card/30 p-5">
+              <div className="flex items-center gap-2 text-primary font-mono text-xs font-semibold uppercase tracking-wider">
+                <Sparkles className="size-4" />
+                <span>Creative Direction</span>
+              </div>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Visual identity storytelling, film color grading, and editorial curation for brands
+                and independent publications.
+              </p>
             </div>
           </div>
 
-          {/* Quick Studio & Collaboration Metadata */}
-          <div className="mt-10 grid gap-4 border-t border-border/70 pt-8 sm:grid-cols-3">
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <MapPin className="size-3.5 text-primary" />
-                <span className="font-mono text-[10px] uppercase tracking-wider">Base of Operations</span>
-              </div>
-              <p className="font-medium text-foreground">Chennai, Tamil Nadu</p>
-              <p className="text-xs text-muted-foreground">Kasimedu · Marina · Mylapore</p>
+          {/* Studio Quick Meta */}
+          <div className="mt-8 flex flex-wrap items-center gap-6 font-mono text-xs text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <MapPin className="size-3.5 text-primary" />
+              <span>Chennai, Tamil Nadu, India</span>
             </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Clock className="size-3.5 text-primary" />
-                <span className="font-mono text-[10px] uppercase tracking-wider">Response Time</span>
-              </div>
-              <p className="font-medium text-foreground">Prompt & Active</p>
-              <p className="text-xs text-muted-foreground">Usually within a few hours</p>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Camera className="size-3.5 text-primary" />
-                <span className="font-mono text-[10px] uppercase tracking-wider">Focus</span>
-              </div>
-              <p className="font-medium text-foreground">Street & Documentary</p>
-              <p className="text-xs text-muted-foreground">Editorial · Portraits · Prints</p>
+            <div className="flex items-center gap-2">
+              <Clock className="size-3.5 text-primary" />
+              <span>Prompt response · IST (UTC +5:30)</span>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Editorial Atmosphere Plate with Camera Frame HUD */}
+        {/* Right: Exhibition Print Frame */}
         <div className="lg:col-span-5">
-          <div className="relative overflow-hidden rounded-sm border border-border/80 bg-card p-3 shadow-print">
-            {/* Top Plate Info */}
-            <div className="mb-3 flex items-center justify-between px-1 font-mono text-[10px] tracking-wider text-muted-foreground">
-              <span className="text-primary font-semibold">PLATE · ARCHIVE 01</span>
-              <span>CHENNAI STREETS</span>
+          <div className="relative overflow-hidden rounded-sm border border-border/70 bg-card/60 p-4 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
+            <div className="mb-3 flex items-center justify-between font-mono text-[10px] tracking-widest text-muted-foreground">
+              <span className="text-primary font-semibold">STUDIO EXHIBITION PRINT</span>
+              <span>CHENNAI · 35MM</span>
             </div>
 
-            {/* Photo Image */}
-            <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-muted">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-black">
               <img
-                src={bg.src}
-                alt={bg.title}
+                src={featuredPhoto.src}
+                alt={featuredPhoto.title}
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+                className="h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-105"
               />
 
-              {/* Viewfinder Corner Overlays */}
+              {/* Viewfinder Lens Framing */}
               <div className="pointer-events-none absolute inset-3">
-                <span className="absolute left-0 top-0 h-5 w-5 border-l-2 border-t-2 border-white/80" />
-                <span className="absolute right-0 top-0 h-5 w-5 border-r-2 border-t-2 border-white/80" />
-                <span className="absolute bottom-0 left-0 h-5 w-5 border-b-2 border-l-2 border-white/80" />
-                <span className="absolute bottom-0 right-0 h-5 w-5 border-b-2 border-r-2 border-white/80" />
+                <span className="absolute left-0 top-0 h-4 w-4 border-l border-t border-white/70" />
+                <span className="absolute right-0 top-0 h-4 w-4 border-r border-t border-white/70" />
+                <span className="absolute bottom-0 left-0 h-4 w-4 border-b border-l border-white/70" />
+                <span className="absolute bottom-0 right-0 h-4 w-4 border-b border-r border-white/70" />
               </div>
 
-              {/* Bottom Scrim with Quote */}
+              {/* Bottom Quote Overlay */}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-5">
                 <p className="font-display text-xl leading-snug text-white">
-                  “Every picture here comes with the human story behind the shutter.”
+                  “My camera is my language. Chennai is my story. Photography is my forever love.”
                 </p>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-primary">
-                  — Rahul · Chennai
-                </p>
+                <div className="mt-2 flex items-center justify-between font-mono text-[10px] text-primary">
+                  <span>— RAHUL</span>
+                  <span className="text-white/70">KASIMEDU & NIGHT STREETS</span>
+                </div>
               </div>
             </div>
 
-            {/* Bottom Plate Strip */}
-            <div className="mt-3 flex items-center justify-between px-1 font-mono text-[10px] text-muted-foreground">
-              <span>LEICA / FUJIFILM SYSTEM</span>
-              <span className="text-primary">35MM FIXED</span>
+            <div className="mt-3 flex items-center justify-between font-mono text-[10px] text-muted-foreground">
+              <span>LEICA M11 / FUJIFILM SYSTEM</span>
+              <span className="text-primary">13.0827° N, 80.2707° E</span>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
